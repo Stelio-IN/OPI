@@ -7,8 +7,7 @@ const Veiculo = sequelize.define('Veiculo', {
   matricula: { type: DataTypes.STRING, allowNull: false },
   modelo: { type: DataTypes.STRING },
   capacidade: { type: DataTypes.INTEGER },
-  cod_unic_pagament: { type: DataTypes.STRING },
-  password: { type: DataTypes.STRING }
+  cod_unic_pagament: { type: DataTypes.STRING }
 });
 
 module.exports = Veiculo;

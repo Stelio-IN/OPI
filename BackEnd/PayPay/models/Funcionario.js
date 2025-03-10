@@ -9,7 +9,7 @@ const Funcionario = sequelize.define('Funcionario', {
   apelido: { type: DataTypes.STRING },
   email: { type: DataTypes.STRING },
   celular: { type: DataTypes.STRING },
-  endereco: { type: DataTypes.STRING }
+  password: { type: DataTypes.STRING }
 });
 
 module.exports = Funcionario;
