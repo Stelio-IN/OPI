@@ -4,36 +4,8 @@ import DashboardMain from './DashboardMain';
 import Institutions from './Institutions';
 import Routes from './Routes';
 import Tariffs from './Tariffs';
+import RotaTarifa from './RotaTarifa';
 
-// Interfaces comuns que serão usadas por vários componentes
-export interface Institution {
-  id: number;
-  name: string;
-  address: string;
-  contact: string;
-  students: number;
-}
-
-export interface Route {
-  id: string;
-  origin: string;
-  destination: string;
-  distance: string;
-  status: string;
-}
-
-export interface Tariff {
-  routeId: string;
-  type: string;
-  value: string;
-  validity: string;
-}
-
-export interface Activity {
-  action: string;
-  description: string;
-  date: string;
-}
 
 // CSS Inline para ser compartilhado entre componentes
 export const styles = {
@@ -206,30 +178,6 @@ export const styles = {
   },
 };
 
-// Dados mock para serem usados pelos componentes
-export const mockData = {
-  institutions: [
-    { id: 1, name: 'Universidade Federal', address: 'Av. Principal, 1000', contact: 'contato@univ.edu', students: 12500 },
-    { id: 2, name: 'Colégio Santa Maria', address: 'Rua das Flores, 123', contact: 'info@santamaria.edu', students: 850 },
-    { id: 3, name: 'Instituto Técnico', address: 'Av. Industrial, 500', contact: 'secretaria@instec.edu', students: 2300 },
-  ],
-  routes: [
-    { id: 'RT-001', origin: 'Terminal Central', destination: 'Universidade Federal', distance: '12 km', status: 'Ativa' },
-    { id: 'RT-002', origin: 'Terminal Oeste', destination: 'Colégio Santa Maria', distance: '8 km', status: 'Ativa' },
-    { id: 'RT-003', origin: 'Terminal Sul', destination: 'Instituto Técnico', distance: '15 km', status: 'Ativa' },
-  ],
-  tariffs: [
-    { routeId: 'RT-001', type: 'Estudante', value: '2,50', validity: '01/03/2025 - 30/06/2025' },
-    { routeId: 'RT-002', type: 'Regular', value: '4,75', validity: '01/03/2025 - 31/12/2025' },
-    { routeId: 'RT-003', type: 'Idoso', value: '0,00', validity: '01/01/2025 - 31/12/2025' },
-  ],
-  activities: [
-    { action: 'Atualização', description: 'Tarifa atualizada para a rota São Paulo - Rio de Janeiro', date: '10/03/2025' },
-    { action: 'Nova', description: 'Instituição "Colégio Santa Maria" adicionada', date: '09/03/2025' },
-    { action: 'Remoção', description: 'Rota "Terminal Central - Vila Nova" desativada', date: '08/03/2025' },
-  ]
-};
-
 const AdminDashboard: React.FC = () => {
   // Estado para controlar a seção ativa
   const [activeSection, setActiveSection] = useState<string>('dashboard');
@@ -247,19 +195,22 @@ const AdminDashboard: React.FC = () => {
       {/* Conteúdo Principal */}
       <div className="ml-64 flex-1 p-8" style={styles.mainContent}>
         {activeSection === 'dashboard' && (
-          <DashboardMain activities={mockData.activities} />
+          <DashboardMain/>
         )}
 
         {activeSection === 'instituicoes' && (
-          <Institutions institutions={mockData.institutions} />
+          <Institutions/>
         )}
 
         {activeSection === 'rotas' && (
-          <Routes routes={mockData.routes} />
+          <Routes/>
         )}
 
         {activeSection === 'tarifas' && (
-          <Tariffs tariffs={mockData.tariffs} />
+          <Tariffs/>
+        )}
+        {activeSection === 'rotaTarifa' && (
+          <RotaTarifa/>
         )}
       </div>
     </div>

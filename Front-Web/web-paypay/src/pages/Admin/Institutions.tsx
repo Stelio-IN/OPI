@@ -1,18 +1,39 @@
-import React from 'react';
-import { styles, Institution } from './AdminDashboard';
+import React, { useEffect, useState } from 'react';
+import { styles } from './AdminDashboard';
 
-interface InstitutionsProps {
-  institutions: Institution[];
+// Definindo a interface para os dados que vêm da API
+interface Institution {
+  id_instituicao: number;
+  nome: string;
+  email: string;
+  senha: string;
+  localizacao: string;
+  createdAt: string;
+  updatedAt: string;
 }
 
-const Institutions: React.FC<InstitutionsProps> = ({ institutions }) => {
+const Institutions: React.FC = () => {
+  const [institutions, setInstitutions] = useState<Institution[]>([]);
+
+  // Função para buscar as instituições da API
+  const fetchInstitutions = async () => {
+    try {
+      const response = await fetch('http://localhost:3005/api/instituicoes');
+      const data = await response.json();
+      setInstitutions(data);
+    } catch (error) {
+      console.error('Erro ao carregar instituições:', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchInstitutions();
+  }, []);
+
   return (
     <div>
       <div style={styles.sectionHeader}>
         <h1 style={styles.sectionTitle}>Instituições</h1>
-        <button style={{...styles.button, ...styles.buttonPrimary}} className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
-          + Nova Instituição
-        </button>
       </div>
 
       <div className="bg-white rounded-lg shadow p-6" style={styles.tableContainer}>
@@ -21,22 +42,24 @@ const Institutions: React.FC<InstitutionsProps> = ({ institutions }) => {
             <thead style={styles.tableHead}>
               <tr>
                 <th style={styles.tableHeader}>Nome</th>
-                <th style={styles.tableHeader}>Endereço</th>
-                <th style={styles.tableHeader}>Contato</th>
-                <th style={styles.tableHeader}>Alunos</th>
+                <th style={styles.tableHeader}>Localização</th>
+                <th style={styles.tableHeader}>Email</th>
                 <th style={styles.tableHeader}>Ações</th>
               </tr>
             </thead>
             <tbody>
               {institutions.map((institution) => (
-                <tr key={institution.id} style={styles.tableRow}>
-                  <td style={styles.tableCell}>{institution.name}</td>
-                  <td style={styles.tableCell}>{institution.address}</td>
-                  <td style={styles.tableCell}>{institution.contact}</td>
-                  <td style={styles.tableCell}>{institution.students.toLocaleString()}</td>
+                <tr key={institution.id_instituicao} style={styles.tableRow}>
+                  <td style={styles.tableCell}>{institution.nome}</td>
+                  <td style={styles.tableCell}>{institution.localizacao}</td>
+                  <td style={styles.tableCell}>{institution.email}</td>
                   <td style={styles.tableCell}>
-                    <button style={{...styles.button, ...styles.buttonText}} className="text-blue-600 mr-2">Editar</button>
-                    <button style={{...styles.button, ...styles.buttonText, ...styles.buttonDanger}} className="text-red-600">Excluir</button>
+                    <button 
+                      style={{ ...styles.button, ...styles.buttonText }} 
+                      className="text-blue-600"
+                    >
+                      Ver Detalhes
+                    </button>
                   </td>
                 </tr>
               ))}

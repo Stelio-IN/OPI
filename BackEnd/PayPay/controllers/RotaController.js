@@ -1,62 +1,63 @@
-const rota = require('../models/Rota');
+const Rota = require('../models/Rota'); // Use "Rota" com letra maiúscula para evitar conflitos
 
-// Criar um novo pagamento
+// Criar uma nova rota
 exports.create = async (req, res) => {
   try {
-    const pagamento = await rota.create(req.body);
-    res.status(201).json(pagamento);
+    const novaRota = await Rota.create(req.body); // Use "novaRota" em vez de "rota"
+    res.status(201).json(novaRota);
   } catch (error) {
-    res.status(400).json({ error: 'Erro ao criar pagamento', details: error.message });
+    res.status(400).json({ error: 'Erro ao criar rota', details: error.message });
   }
 };
 
-// Listar todos os pagamentos
+// Listar todas as rotas
 exports.getAll = async (req, res) => {
   try {
-    const pagamentos = await rota.findAll();
-    res.status(200).json(pagamentos);
+    const rotas = await Rota.findAll();
+    res.status(200).json(rotas);
   } catch (error) {
-    res.status(400).json({ error: 'Erro ao listar pagamentos', details: error.message });
+    res.status(400).json({ error: 'Erro ao listar rotas', details: error.message });
   }
 };
 
-// Obter um pagamento por ID
+// Obter uma rota por ID
 exports.getById = async (req, res) => {
   try {
-    const pagamento = await rota.findByPk(req.params.id);
-    if (!pagamento) {
-      return res.status(404).json({ error: 'rota não encontrado' });
+    const rota = await Rota.findByPk(req.params.id);
+    if (!rota) {
+      return res.status(404).json({ error: 'Rota não encontrada' });
     }
-    res.status(200).json(pagamento);
+    res.status(200).json(rota);
   } catch (error) {
-    res.status(400).json({ error: 'Erro ao buscar pagamento', details: error.message });
+    res.status(400).json({ error: 'Erro ao buscar rota', details: error.message });
   }
 };
-
-// Atualizar um pagamento
+// Atualizar uma rota
 exports.update = async (req, res) => {
   try {
-    const pagamento = await rota.findByPk(req.params.id);
-    if (!pagamento) {
-      return res.status(404).json({ error: 'rota não encontrado' });
+    const id_rota = req.query.id_rota; // Usar query parameter
+    const rota = await Rota.findByPk(id_rota);
+    if (!rota) {
+      return res.status(404).json({ error: 'Rota não encontrada' });
     }
-    await pagamento.update(req.body);
-    res.status(200).json(pagamento);
+    await rota.update(req.body); // Atualiza os dados da rota com o corpo da requisição
+    res.status(200).json(rota); // Retorna a rota atualizada
   } catch (error) {
-    res.status(400).json({ error: 'Erro ao atualizar pagamento', details: error.message });
+    res.status(400).json({ error: 'Erro ao atualizar rota', details: error.message });
   }
 };
 
-// Deletar um pagamento
+// Deletar uma rota
 exports.delete = async (req, res) => {
   try {
-    const pagamento = await rota.findByPk(req.params.id);
-    if (!pagamento) {
-      return res.status(404).json({ error: 'rota não encontrado' });
+    const id_rota = req.query.id_rota; // Usar query parameter
+    const rota = await Rota.findByPk(id_rota);
+    if (!rota) {
+      return res.status(404).json({ error: 'Rota não encontrada' });
     }
-    await pagamento.destroy();
+    await rota.destroy(); // Corrigido para deletar a rota específica
     res.status(204).send();
   } catch (error) {
-    res.status(400).json({ error: 'Erro ao deletar pagamento', details: error.message });
+    res.status(400).json({ error: 'Erro ao deletar rota', details: error.message });
   }
 };

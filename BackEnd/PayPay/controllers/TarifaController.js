@@ -33,28 +33,31 @@ exports.getById = async (req, res) => {
   }
 };
 
-// Atualizar um pagamento
+
+// Atualizar uma tarifa
 exports.update = async (req, res) => {
   try {
-    const pagamento = await tarifa.findByPk(req.params.id);
-    if (!pagamento) {
-      return res.status(404).json({ error: 'tarifa não encontrado' });
+    const tarifaId = req.query.id_tarifa; // Usar query parameter
+    const tarifaToUpdate = await tarifa.findByPk(tarifaId);
+    if (!tarifaToUpdate) {
+      return res.status(404).json({ error: 'Tarifa não encontrada' });
     }
-    await pagamento.update(req.body);
-    res.status(200).json(pagamento);
+    await tarifaToUpdate.update(req.body);
+    res.status(200).json(tarifaToUpdate);
   } catch (error) {
-    res.status(400).json({ error: 'Erro ao atualizar pagamento', details: error.message });
+    res.status(400).json({ error: 'Erro ao atualizar tarifa', details: error.message });
   }
 };
 
-// Deletar um pagamento
+// Deletar uma tarifa
 exports.delete = async (req, res) => {
   try {
-    const pagamento = await tarifa.findByPk(req.params.id);
-    if (!pagamento) {
-      return res.status(404).json({ error: 'tarifa não encontrado' });
+    const tarifaId = req.query.id_tarifa; // Usar query parameter
+    const tarifaToDelete = await tarifa.findByPk(tarifaId);
+    if (!tarifaToDelete) {
+      return res.status(404).json({ error: 'Tarifa não encontrada' });
     }
-    await tarifa.destroy();
+    await tarifaToDelete.destroy(); // Corrigido para deletar a tarifa específica
     res.status(204).send();
   } catch (error) {
     res.status(400).json({ error: 'Erro ao deletar tarifa', details: error.message });
