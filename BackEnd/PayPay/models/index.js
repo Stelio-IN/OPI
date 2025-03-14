@@ -13,19 +13,18 @@ const Veiculo = require('./Veiculo');
 // Definir associações entre os modelos
 
 // Associação de TarifaRota com Rota e Tarifa
-TarifaRota.belongsTo(Rota, { foreignKey: 'id_rota', as: 'Rota' });
-TarifaRota.belongsTo(Tarifa, { foreignKey: 'id_tarifa', as: 'Tarifa' });
+// TarifaRota.belongsTo(Rota, { foreignKey: 'id_rota', as: 'Rota' });
+// TarifaRota.belongsTo(Tarifa, { foreignKey: 'id_tarifa', as: 'Tarifa' });
 
-Rota.hasMany(TarifaRota, { foreignKey: 'id_rota', as: 'TarifasAssociadas' });
-Tarifa.hasMany(TarifaRota, { foreignKey: 'id_tarifa', as: 'RotasAssociadas' });
+// Rota.hasMany(TarifaRota, { foreignKey: 'id_rota', as: 'TarifasAssociadas' });
+// Tarifa.hasMany(TarifaRota, { foreignKey: 'id_tarifa', as: 'RotasAssociadas' });
 
-// Outras associações que podem existir
-// (adicione aqui as outras relações que forem necessárias para os outros modelos)
+
 
 // Sincronizando o banco de dados
 const syncDatabase = async () => {
   try {
-    await sequelize.sync({ force: true }); // Cuidado! Isso apagará os dados existentes!
+    await sequelize.sync({ force: false }); // Cuidado! Isso apagará os dados existentes!
     console.log('Banco de dados sincronizado');
   } catch (error) {
     console.error('Erro ao sincronizar o banco de dados:', error);

@@ -106,33 +106,31 @@ const RotaTarifa: React.FC = () => {
 
   // Função para remover associação
   const removerAssociacao = async (id: number) => {
-    if (!confirm('Tem certeza que deseja remover esta associação?')) {
+    if (!confirm("Tem certeza que deseja remover esta associação?")) {
       return;
     }
-
+  
     setRemovingId(id);
     try {
-      const response = await fetch('http://localhost:3005/api/tarifa_rota/remove', {
-        method: 'DELETE',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ id }),
+      const response = await fetch(`http://localhost:3005/api/tarifa_rota/remove/${id}`, {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
       });
-
+  
       if (!response.ok) {
-        throw new Error('Erro ao remover associação');
+        throw new Error("Erro ao remover associação");
       }
-
-      alert('Associação removida com sucesso!');
-      // Atualizar lista de associações após remover
+  
+      alert("Associação removida com sucesso!");
       carregarAssociacoes();
-      
     } catch (error) {
       console.error(error);
-      alert('Erro ao remover associação.');
+      alert("Erro ao remover associação.");
     } finally {
       setRemovingId(null);
     }
   };
+  
 
   return (
     <div style={styles.container}>
@@ -203,48 +201,44 @@ const RotaTarifa: React.FC = () => {
                 <th style={styles.tableHeader}>Destino</th>
                 <th style={styles.tableHeader}>Tipo Cliente</th>
                 <th style={{...styles.tableHeader, textAlign: 'right'}}>Valor (MZN)</th>
-                <th style={{...styles.tableHeader, textAlign: 'center'}}>Status</th>
                 <th style={{...styles.tableHeader, textAlign: 'center'}}>Ações</th>
               </tr>
             </thead>
             <tbody>
-              {associacoes.length > 0 ? (
-                associacoes.map((assoc) => (
-                  <tr key={assoc.id} style={styles.tableRow}>
-                    <td style={styles.tableCell}>{assoc.Rota?.origen || 'Desconhecido'}</td>
-                    <td style={styles.tableCell}>{assoc.Rota?.destino || 'Desconhecido'}</td>
-                    <td style={styles.tableCell}>{assoc.Tarifa?.tipo_cli || 'Desconhecido'}</td>
-                    <td style={{...styles.tableCell, textAlign: 'right', fontWeight: 500}}>
-                      {assoc.Tarifa?.valor !== undefined ? `${assoc.Tarifa.valor.toFixed(2)} MZN` : 'N/A'}
-                    </td>
-                    <td style={{...styles.tableCell, textAlign: 'center'}}>
-                      <span style={{
-                        ...styles.badge,
-                        ...(assoc.activo ? styles.badgeActive : styles.badgeInactive)
-                      }}>
-                        {assoc.activo ? 'Ativo' : 'Inativo'}
-                      </span>
-                    </td>
-                    <td style={{...styles.tableCell, textAlign: 'center'}}>
-                      <button
-                        onClick={() => removerAssociacao(assoc.id)}
-                        disabled={removingId === assoc.id}
-                        style={{
-                          ...styles.removeButton,
-                          ...(removingId === assoc.id ? styles.buttonDisabled : {})
-                        }}
-                      >
-                        {removingId === assoc.id ? 'Removendo...' : 'Remover'}
-                      </button>
-                    </td>
-                  </tr>
-                ))
-              ) : (
-                <tr>
-                  <td colSpan={6} style={styles.emptyMessage}>Nenhuma associação encontrada.</td>
-                </tr>
-              )}
-            </tbody>
+  {associacoes.length > 0 ? (
+    associacoes.map((assoc) => (
+      <tr key={assoc.id} style={styles.tableRow}>
+        <td style={styles.tableCell}>{assoc.rota?.origen || 'Desconhecido'}</td>
+        <td style={styles.tableCell}>{assoc.rota?.destino || 'Desconhecido'}</td>
+        <td style={styles.tableCell}>{assoc.tarifa?.tipo_cli || 'Desconhecido'}</td>
+        <td style={{ ...styles.tableCell, textAlign: 'right', fontWeight: 500 }}>
+          {assoc.tarifa?.valor !== undefined ? `${assoc.tarifa.valor.toFixed(2)} MZN` : 'N/A'}
+        </td>
+        <td style={{ ...styles.tableCell, textAlign: 'center' }}>
+        <button
+  onClick={() => {
+    console.log("Tentando remover associação com ID:", assoc.id);
+    removerAssociacao(assoc.id);
+  }}
+  disabled={removingId === assoc.id}
+  style={{
+    ...styles.removeButton,
+    ...(removingId === assoc.id ? styles.buttonDisabled : {}),
+  }}
+>
+  {removingId === assoc.id ? "Removendo..." : "Remover"}
+</button>
+
+        </td>
+      </tr>
+    ))
+  ) : (
+    <tr>
+      <td colSpan={6} style={styles.emptyMessage}>Nenhuma associação encontrada.</td>
+    </tr>
+  )}
+</tbody>
+
           </table>
         </div>
       </div>

@@ -33,6 +33,6 @@ router.delete('/tarifa', TarifaController.delete);
 //TArifa rota
 router.post('/tarifa_rota',TarifaRotaController.associateTarifaRota)
 router.get('/tarifa_rota/all',TarifaRotaController.getAll)
-router.delete('/tarifa_rota/remove',TarifaRotaController.delete)
+router.delete('/tarifa_rota/remove/:id',TarifaRotaController.delete)
 
 module.exports = router;
