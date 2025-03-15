@@ -5,6 +5,7 @@ import Dashboard from "./pages/Instituicao/Dashboard";
 import DashboardAdmin from "./pages/Admin/AdminDashboard";
 import AdminLogin from "./pages/Admin/AdminLogin";
 import Register from "./pages/Register";
+import './App.css'
 
 function App() {
   return (
