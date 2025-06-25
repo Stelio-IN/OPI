@@ -28,7 +28,7 @@ const RotaTarifa: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [removingId, setRemovingId] = useState<number | null>(null);
 
-  // Buscar rotas
+  // Fetch routes
   useEffect(() => {
     fetch('http://localhost:3005/api/rota/all')
       .then((res) => res.json())
@@ -36,7 +36,7 @@ const RotaTarifa: React.FC = () => {
       .catch((error) => console.error('Erro ao carregar rotas:', error));
   }, []);
 
-  // Buscar tarifas
+  // Fetch fares
   useEffect(() => {
     fetch('http://localhost:3005/api/tarifa/all')
       .then((res) => res.json())
@@ -44,7 +44,7 @@ const RotaTarifa: React.FC = () => {
       .catch((error) => console.error('Erro ao carregar tarifas:', error));
   }, []);
 
-  // Buscar associações
+  // Fetch associations
   const carregarAssociacoes = () => {
     fetch('http://localhost:3005/api/tarifa_rota/all')
       .then((res) => res.json())
@@ -62,7 +62,7 @@ const RotaTarifa: React.FC = () => {
     carregarAssociacoes();
   }, []);
 
-  // Função para associar tarifa à rota
+  // Associate fare with route
   const associarTarifaRota = async () => {
     if (!selectedRota || !selectedTarifa) {
       alert('Selecione uma rota e uma tarifa antes de associar.');
@@ -89,11 +89,8 @@ const RotaTarifa: React.FC = () => {
       setAssociacoes([...associacoes, newAssociation]);
       alert('Associação criada com sucesso!');
       
-      // Resetar seleções após associação bem-sucedida
       setSelectedRota(null);
       setSelectedTarifa(null);
-      
-      // Recarregar associações para garantir dados atualizados
       carregarAssociacoes();
       
     } catch (error) {
@@ -104,7 +101,7 @@ const RotaTarifa: React.FC = () => {
     }
   };
 
-  // Função para remover associação
+  // Remove association
   const removerAssociacao = async (id: number) => {
     if (!confirm("Tem certeza que deseja remover esta associação?")) {
       return;
@@ -130,21 +127,25 @@ const RotaTarifa: React.FC = () => {
       setRemovingId(null);
     }
   };
-  
 
   return (
-    <div style={styles.container}>
-      <h1 style={styles.title}>Associação de Rotas e Tarifas</h1>
+    <div className="max-w-6xl mx-auto px-4 py-8 font-sans text-gray-800">
+      {/* Header */}
+      <div className="relative mb-8 pb-6">
+        <h1 className="text-3xl font-semibold text-gray-900">Associação de Rotas e Tarifas</h1>
+        <div className="absolute bottom-0 left-0 w-20 h-1 bg-gradient-to-r from-indigo-600 to-emerald-500 rounded"></div>
+      </div>
 
-      <div style={styles.formContainer}>
-        <h2 style={styles.subtitle}>Nova Associação</h2>
+      {/* New Association Card */}
+      <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 mb-6">
+        <h2 className="text-xl font-semibold text-gray-900 mb-6 pb-4 border-b border-gray-100">Nova Associação</h2>
         
-        <div style={styles.formGrid}>
-          {/* Seleção de Rota */}
-          <div style={styles.formGroup}>
-            <label style={styles.label}>Rota:</label>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+          {/* Route Selection */}
+          <div>
+            <label className="block text-sm font-medium text-gray-600 mb-2">Rota:</label>
             <select
-              style={styles.select}
+              className="w-full px-4 py-3 border border-gray-200 rounded-lg bg-white shadow-xs focus:ring-2 focus:ring-indigo-200 focus:border-indigo-500 transition"
               onChange={(e) => setSelectedRota(e.target.value ? Number(e.target.value) : null)}
               value={selectedRota || ""}
             >
@@ -157,11 +158,11 @@ const RotaTarifa: React.FC = () => {
             </select>
           </div>
 
-          {/* Seleção de Tarifa */}
-          <div style={styles.formGroup}>
-            <label style={styles.label}>Tarifa:</label>
+          {/* Fare Selection */}
+          <div>
+            <label className="block text-sm font-medium text-gray-600 mb-2">Tarifa:</label>
             <select
-              style={styles.select}
+              className="w-full px-4 py-3 border border-gray-200 rounded-lg bg-white shadow-xs focus:ring-2 focus:ring-indigo-200 focus:border-indigo-500 transition"
               onChange={(e) => setSelectedTarifa(e.target.value ? Number(e.target.value) : null)}
               value={selectedTarifa || ""}
             >
@@ -175,213 +176,83 @@ const RotaTarifa: React.FC = () => {
           </div>
         </div>
 
-        <div style={styles.buttonContainer}>
+        <div className="flex justify-end">
           <button
             onClick={associarTarifaRota}
             disabled={loading || !selectedRota || !selectedTarifa}
-            style={{
-              ...styles.button,
-              ...(loading || !selectedRota || !selectedTarifa ? styles.buttonDisabled : {})
-            }}
+            className={`flex items-center px-6 py-3 rounded-lg font-medium text-white ${
+              loading || !selectedRota || !selectedTarifa
+                ? 'bg-gray-400 cursor-not-allowed'
+                : 'bg-indigo-600 hover:bg-indigo-700'
+            } transition`}
           >
+            {loading && (
+              <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+              </svg>
+            )}
             {loading ? 'Associando...' : 'Associar'}
           </button>
         </div>
       </div>
 
-      {/* Listagem das associações existentes */}
-      <div style={styles.tableContainer}>
-        <h2 style={styles.subtitle}>Associações Existentes</h2>
+      {/* Existing Associations Card */}
+      <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+        <h2 className="text-xl font-semibold text-gray-900 mb-6 pb-4 border-b border-gray-100">Associações Existentes</h2>
         
-        <div style={styles.tableWrapper}>
-          <table style={styles.table}>
-            <thead>
-              <tr>
-                <th style={styles.tableHeader}>Origem</th>
-                <th style={styles.tableHeader}>Destino</th>
-                <th style={styles.tableHeader}>Tipo Cliente</th>
-                <th style={{...styles.tableHeader, textAlign: 'right'}}>Valor (MZN)</th>
-                <th style={{...styles.tableHeader, textAlign: 'center'}}>Ações</th>
-              </tr>
-            </thead>
-            <tbody>
-  {associacoes.length > 0 ? (
-    associacoes.map((assoc) => (
-      <tr key={assoc.id} style={styles.tableRow}>
-        <td style={styles.tableCell}>{assoc.rota?.origen || 'Desconhecido'}</td>
-        <td style={styles.tableCell}>{assoc.rota?.destino || 'Desconhecido'}</td>
-        <td style={styles.tableCell}>{assoc.tarifa?.tipo_cli || 'Desconhecido'}</td>
-        <td style={{ ...styles.tableCell, textAlign: 'right', fontWeight: 500 }}>
-          {assoc.tarifa?.valor !== undefined ? `${assoc.tarifa.valor.toFixed(2)} MZN` : 'N/A'}
-        </td>
-        <td style={{ ...styles.tableCell, textAlign: 'center' }}>
-        <button
-  onClick={() => {
-    console.log("Tentando remover associação com ID:", assoc.id);
-    removerAssociacao(assoc.id);
-  }}
-  disabled={removingId === assoc.id}
-  style={{
-    ...styles.removeButton,
-    ...(removingId === assoc.id ? styles.buttonDisabled : {}),
-  }}
->
-  {removingId === assoc.id ? "Removendo..." : "Remover"}
-</button>
-
-        </td>
-      </tr>
-    ))
-  ) : (
-    <tr>
-      <td colSpan={6} style={styles.emptyMessage}>Nenhuma associação encontrada.</td>
-    </tr>
-  )}
-</tbody>
-
-          </table>
-        </div>
+        {associacoes.length > 0 ? (
+          <div className="overflow-x-auto border border-gray-100 rounded-lg">
+            <table className="min-w-full divide-y divide-gray-200">
+              <thead className="bg-gray-50">
+                <tr>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Origem</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Destino</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tipo Cliente</th>
+                  <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Valor (MZN)</th>
+                  <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Ações</th>
+                </tr>
+              </thead>
+              <tbody className="bg-white divide-y divide-gray-200">
+                {associacoes.map((assoc) => (
+                  <tr key={assoc.id} className="hover:bg-gray-50">
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{assoc.Rota?.origen || 'Desconhecido'}</td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{assoc.Rota?.destino || 'Desconhecido'}</td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{assoc.Tarifa?.tipo_cli || 'Desconhecido'}</td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-right">
+                      {assoc.Tarifa?.valor !== undefined ? (
+                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                          {assoc.Tarifa.valor.toFixed(2)} MZN
+                        </span>
+                      ) : 'N/A'}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-center">
+                      <button
+                        onClick={() => removerAssociacao(assoc.id)}
+                        disabled={removingId === assoc.id}
+                        className={`px-4 py-2 rounded-md text-sm font-medium ${
+                          removingId === assoc.id
+                            ? 'bg-gray-300 text-gray-600 cursor-not-allowed'
+                            : 'bg-red-100 text-red-700 hover:bg-red-200'
+                        } transition`}
+                      >
+                        {removingId === assoc.id ? 'Removendo...' : 'Remover'}
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        ) : (
+          <div className="text-center py-12">
+            <div className="text-5xl mb-4">📭</div>
+            <p className="text-lg font-medium text-gray-500">Nenhuma associação encontrada</p>
+          </div>
+        )}
       </div>
     </div>
   );
-};
-
-// Estilos CSS internos
-const styles = {
-  container: {
-    maxWidth: '1000px',
-    margin: '0 auto',
-    padding: '24px',
-    backgroundColor: '#ffffff',
-    boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
-    borderRadius: '8px',
-    fontFamily: 'Arial, sans-serif'
-  },
-  title: {
-    fontSize: '24px',
-    fontWeight: 'bold',
-    marginBottom: '24px',
-    color: '#2c5282',
-    borderBottom: '1px solid #e2e8f0',
-    paddingBottom: '8px'
-  },
-  subtitle: {
-    fontSize: '18px',
-    fontWeight: '600',
-    marginBottom: '16px',
-    color: '#2c5282'
-  },
-  formContainer: {
-    backgroundColor: '#ebf8ff',
-    padding: '16px',
-    borderRadius: '8px',
-    marginBottom: '24px'
-  },
-  formGrid: {
-    display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
-    gap: '16px',
-    marginBottom: '16px'
-  },
-  formGroup: {
-    marginBottom: '12px'
-  },
-  label: {
-    display: 'block',
-    fontWeight: '500',
-    marginBottom: '4px',
-    color: '#4a5568'
-  },
-  select: {
-    width: '100%',
-    padding: '8px',
-    border: '1px solid #cbd5e0',
-    borderRadius: '4px',
-    fontSize: '14px'
-  },
-  buttonContainer: {
-    display: 'flex',
-    justifyContent: 'flex-end'
-  },
-  button: {
-    backgroundColor: '#3182ce',
-    color: 'white',
-    padding: '8px 16px',
-    border: 'none',
-    borderRadius: '4px',
-    fontWeight: '500',
-    cursor: 'pointer',
-    minWidth: '120px',
-    transition: 'background-color 0.2s'
-  },
-  buttonDisabled: {
-    backgroundColor: '#a0aec0',
-    cursor: 'not-allowed'
-  },
-  removeButton: {
-    backgroundColor: '#e53e3e',
-    color: 'white',
-    padding: '6px 12px',
-    border: 'none',
-    borderRadius: '4px',
-    fontWeight: '500',
-    cursor: 'pointer',
-    fontSize: '12px',
-    transition: 'background-color 0.2s'
-  },
-  tableContainer: {
-    marginTop: '24px'
-  },
-  tableWrapper: {
-    overflowX: 'auto'
-  },
-  table: {
-    width: '100%',
-    borderCollapse: 'collapse',
-    boxShadow: '0 1px 3px rgba(0,0,0,0.1)',
-    backgroundColor: 'white',
-    borderRadius: '4px'
-  },
-  tableHeader: {
-    borderBottom: '1px solid #e2e8f0',
-    padding: '12px',
-    textAlign: 'left',
-    fontSize: '14px',
-    fontWeight: '600',
-    color: '#4a5568',
-    backgroundColor: '#f7fafc'
-  },
-  tableRow: {
-    borderBottom: '1px solid #e2e8f0',
-    ':hover': {
-      backgroundColor: '#f7fafc'
-    }
-  },
-  tableCell: {
-    padding: '12px',
-    borderBottom: '1px solid #e2e8f0',
-    fontSize: '14px'
-  },
-  badge: {
-    display: 'inline-block',
-    padding: '4px 8px',
-    borderRadius: '9999px',
-    fontSize: '12px',
-    fontWeight: '500'
-  },
-  badgeActive: {
-    backgroundColor: '#c6f6d5',
-    color: '#22543d'
-  },
-  badgeInactive: {
-    backgroundColor: '#fed7d7',
-    color: '#822727'
-  },
-  emptyMessage: {
-    textAlign: 'center',
-    padding: '16px',
-    color: '#718096'
-  }
 };
 
 export default RotaTarifa;

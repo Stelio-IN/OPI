@@ -4,6 +4,7 @@ import './index.css'
 import App from './App.tsx'
 import './index.css'; // ou o nome do seu arquivo CSS
 
+
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <App />

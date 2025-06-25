@@ -10,16 +10,14 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@phosphor-icons/react": "^2.1.10",
     "@tailwindcss/postcss7-compat": "^2.2.17",
-    "autoprefixer": "^9.8.8",
     "axios": "^1.8.2",
     "lucide-react": "^0.479.0",
-    "postcss": "^7.0.39",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-router-dom": "^7.3.0",
-    "recharts": "^2.15.1",
-    "tailwindcss": "^4.0.14"
+    "recharts": "^2.15.1"
   },
   "devDependencies": {
     "@eslint/js": "^9.21.0",
@@ -27,10 +25,13 @@
     "@types/react": "^19.0.10",
     "@types/react-dom": "^19.0.4",
     "@vitejs/plugin-react": "^4.3.4",
+    "autoprefixer": "^9.8.8",
     "eslint": "^9.21.0",
     "eslint-plugin-react-hooks": "^5.1.0",
     "eslint-plugin-react-refresh": "^0.4.19",
     "globals": "^15.15.0",
+    "postcss": "^7.0.39",
+    "tailwindcss": "npm:@tailwindcss/postcss7-compat@^2.2.17",
     "typescript": "~5.7.2",
     "typescript-eslint": "^8.24.1",
     "vite": "^6.3.5"
