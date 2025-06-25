@@ -17,6 +17,13 @@ const Instituicao = sequelize.define('Instituicao', {
     type: DataTypes.STRING,
     allowNull: false,
   },
+   imagem_url: { type: DataTypes.STRING },
+
+  status: { 
+    type: DataTypes.ENUM('Activo', 'Inactivo'), 
+    defaultValue: 'Activo' 
+  },  
+
 });
 
 module.exports = Instituicao;

@@ -7,16 +7,13 @@ exports.create = async (req, res) => {
   try {
     const { nome, email, senha, localizacao } = req.body;
 
-    // Verifica se o email já está em uso
-    const existingInstituicao = await Instituicao.findOne({ where: { email } });
-    if (existingInstituicao) {
+    const existing = await Instituicao.findOne({ where: { email } });
+    if (existing) {
       return res.status(400).json({ message: 'O email já está em uso.' });
     }
 
-    // Hash da senha antes de salvar
     const hashedPassword = await bcrypt.hash(senha, 10);
-    
-    // Criação da instituição
+
     const instituicao = await Instituicao.create({
       nome,
       email,
@@ -24,9 +21,11 @@ exports.create = async (req, res) => {
       localizacao
     });
 
-    res.status(201).json({ message: 'Instituição criada com sucesso!', instituicao });
+    const { senha: _, ...instituicaoSemSenha } = instituicao.toJSON();
+
+    res.status(201).json({ message: 'Instituição criada com sucesso!', instituicao: instituicaoSemSenha });
   } catch (error) {
-    res.status(400).json({ error: 'Erro ao criar instituição', details: error.message });
+    res.status(500).json({ error: 'Erro ao criar instituição', details: error.message });
   }
 };
 
@@ -34,26 +33,22 @@ exports.create = async (req, res) => {
 exports.login = async (req, res) => {
   try {
     const { email, senha } = req.body;
-    console.log(email, senha)
-    // Verifica se o email e senha foram fornecidos
+
     if (!email || !senha) {
       return res.status(400).json({ message: 'Email e senha são obrigatórios.' });
     }
 
-    // Busca a instituição pelo email
     const instituicao = await Instituicao.findOne({ where: { email } });
     if (!instituicao) {
       return res.status(404).json({ message: 'Instituição não encontrada.' });
     }
 
-    // Compara a senha fornecida com a senha criptografada
-    const isPasswordValid = await bcrypt.compare(senha, instituicao.senha);
-    if (!isPasswordValid) {
-      return res.status(400).json({ message: 'Senha incorreta.' });
+    const isMatch = await bcrypt.compare(senha, instituicao.senha);
+    if (!isMatch) {
+      return res.status(401).json({ message: 'Senha incorreta.' });
     }
 
-    // Retorna os dados da instituição sem a senha
-    const { senha: _, ...instituicaoSemSenha } = instituicao.dataValues;
+    const { senha: _, ...instituicaoSemSenha } = instituicao.toJSON();
 
     res.status(200).json({
       message: 'Login realizado com sucesso!',
@@ -63,26 +58,33 @@ exports.login = async (req, res) => {
     res.status(500).json({ message: 'Erro ao realizar login.', details: error.message });
   }
 };
+
 // Listar todas as instituições
 exports.getAll = async (req, res) => {
   try {
-    const instituicoes = await Instituicao.findAll();
+    const instituicoes = await Instituicao.findAll({
+      attributes: { exclude: ['senha'] }
+    });
     res.status(200).json(instituicoes);
   } catch (error) {
-    res.status(400).json({ error: 'Erro ao listar instituições', details: error.message });
+    res.status(500).json({ error: 'Erro ao listar instituições', details: error.message });
   }
 };
 
-// Obter uma instituição por ID
+// Obter instituição por ID
 exports.getById = async (req, res) => {
   try {
-    const instituicao = await Instituicao.findByPk(req.params.id);
+    const instituicao = await Instituicao.findByPk(req.params.id, {
+      attributes: { exclude: ['senha'] }
+    });
+
     if (!instituicao) {
-      return res.status(404).json({ error: 'Instituição não encontrada' });
+      return res.status(404).json({ message: 'Instituição não encontrada.' });
     }
+
     res.status(200).json(instituicao);
   } catch (error) {
-    res.status(400).json({ error: 'Erro ao buscar instituição', details: error.message });
+    res.status(500).json({ error: 'Erro ao buscar instituição', details: error.message });
   }
 };
 
@@ -90,28 +92,37 @@ exports.getById = async (req, res) => {
 exports.update = async (req, res) => {
   try {
     const instituicao = await Instituicao.findByPk(req.params.id);
+
     if (!instituicao) {
-      return res.status(404).json({ error: 'Instituição não encontrada' });
+      return res.status(404).json({ message: 'Instituição não encontrada.' });
     }
+
+    // Evita atualizar senha diretamente aqui
+    if (req.body.senha) {
+      delete req.body.senha;
+    }
+
     await instituicao.update(req.body);
-    res.status(200).json(instituicao);
+    const { senha: _, ...instituicaoSemSenha } = instituicao.toJSON();
+
+    res.status(200).json({ message: 'Instituição atualizada com sucesso.', instituicao: instituicaoSemSenha });
   } catch (error) {
-    res.status(400).json({ error: 'Erro ao atualizar instituição', details: error.message });
+    res.status(500).json({ error: 'Erro ao atualizar instituição', details: error.message });
   }
 };
-
-
 
 // Deletar uma instituição
 exports.delete = async (req, res) => {
   try {
     const instituicao = await Instituicao.findByPk(req.params.id);
+
     if (!instituicao) {
-      return res.status(404).json({ error: 'Instituição não encontrada' });
+      return res.status(404).json({ message: 'Instituição não encontrada.' });
     }
+
     await instituicao.destroy();
-    res.status(204).send();
+    res.status(200).json({ message: 'Instituição removida com sucesso.' });
   } catch (error) {
-    res.status(400).json({ error: 'Erro ao deletar instituição', details: error.message });
+    res.status(500).json({ error: 'Erro ao deletar instituição', details: error.message });
   }
 };

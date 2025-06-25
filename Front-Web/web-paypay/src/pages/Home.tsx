@@ -1,193 +1,88 @@
 import React from 'react';
-import { Link } from "react-router-dom";
+import { Link } from 'react-router-dom';
 
 export default function Home() {
-  // Estilos CSS internos
-  const styles = {
-    welcomeContainer: {
-      minHeight: '100vh',
-      background: 'linear-gradient(to bottom, #1a73e8, #0d47a1)',
-      display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'center',
-      justifyContent: 'center',
-      padding: '20px',
-      fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif"
-    },
-    welcomeCard: {
-      backgroundColor: 'white',
-      borderRadius: '12px',
-      boxShadow: '0 10px 30px rgba(0, 0, 0, 0.2)',
-      padding: '32px',
-      maxWidth: '500px',
-      width: '100%',
-      textAlign: 'center'
-    },
-    welcomeHeader: {
-      marginBottom: '24px'
-    },
-    title: {
-      fontSize: '28px',
-      color: '#1a73e8',
-      marginBottom: '8px',
-      fontWeight: '700'
-    },
-    subtitle: {
-      color: '#5f6368',
-      fontSize: '16px'
-    },
-    paymentOptions: {
-      display: 'grid',
-      gridTemplateColumns: window.innerWidth <= 600 ? '1fr' : '1fr 1fr',
-      gap: '16px',
-      marginBottom: '32px'
-    },
-    paymentOption: {
-      backgroundColor: '#e8f0fe',
-      padding: '16px',
-      borderRadius: '8px',
-      border: '1px solid #d2e3fc',
-      transition: 'transform 0.3s ease'
-    },
-    icon: {
-      width: '48px',
-      height: '48px',
-      margin: '0 auto 8px',
-      color: '#1a73e8'
-    },
-    optionTitle: {
-      fontSize: '18px',
-      fontWeight: '600',
-      marginBottom: '4px',
-      color: '#202124'
-    },
-    optionDescription: {
-      fontSize: '14px',
-      color: '#5f6368'
-    },
-    actions: {
-      display: 'flex',
-      flexDirection: 'column',
-      gap: '16px'
-    },
-    loginButton: {
-      backgroundColor: '#1a73e8',
-      color: 'white',
-      textDecoration: 'none',
-      padding: '12px 24px',
-      borderRadius: '8px',
-      fontWeight: '600',
-      display: 'block',
-      transition: 'background-color 0.3s ease, transform 0.3s ease'
-    },
-    registerLink: {
-      fontSize: '14px',
-      color: '#5f6368'
-    },
-    registerAnchor: {
-      color: '#1a73e8',
-      textDecoration: 'none'
-    },
-    footer: {
-      marginTop: '32px',
-      color: 'white',
-      fontSize: '14px',
-      opacity: '0.8'
-    }
-  };
-
-  // Funções para estilização com hover
-  const handlePaymentOptionHover = (e) => {
-    e.currentTarget.style.transform = 'translateY(-5px)';
-  };
-
-  const handlePaymentOptionLeave = (e) => {
-    e.currentTarget.style.transform = 'translateY(0)';
-  };
-
-  const handleButtonHover = (e) => {
-    e.currentTarget.style.backgroundColor = '#0d47a1';
-    e.currentTarget.style.transform = 'scale(1.05)';
-  };
-
-  const handleButtonLeave = (e) => {
-    e.currentTarget.style.backgroundColor = '#1a73e8';
-    e.currentTarget.style.transform = 'scale(1)';
-  };
-
-  const handleRegisterLinkHover = (e) => {
-    e.currentTarget.style.textDecoration = 'underline';
-  };
-
-  const handleRegisterLinkLeave = (e) => {
-    e.currentTarget.style.textDecoration = 'none';
-  };
-
   return (
-    <div style={styles.welcomeContainer}>
-      <div style={styles.welcomeCard}>
-        <div style={styles.welcomeHeader}>
-          <h1 style={styles.title}>Bem-vindo ao TransportPay</h1>
-          <p style={styles.subtitle}>Sistema de pagamento rápido para transporte público</p>
+    <div className="min-h-screen bg-gradient-to-b from-blue-600 to-blue-900 text-gray-800">
+      {/* Navbar */}
+      <nav className="bg-white shadow-md sticky top-0 z-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between h-16">
+            <div className="flex items-center">
+              <span className="text-2xl font-bold text-blue-600">TransportPay</span>
+            </div>
+            <div className="flex items-center space-x-4">
+              <Link to="/login" className="text-gray-600 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium">
+                Entrar
+              </Link>
+              <Link to="/register" className="bg-blue-600 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-blue-700 transition duration-300">
+                Registrar
+              </Link>
+            </div>
+          </div>
         </div>
+      </nav>
 
-        <div style={styles.paymentOptions}>
-          <div 
-            style={styles.paymentOption} 
-            onMouseEnter={handlePaymentOptionHover}
-            onMouseLeave={handlePaymentOptionLeave}
-          >
-            <div style={styles.icon}>
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      {/* Main Content */}
+      <div className="flex flex-col items-center justify-center min-h-[calc(100vh-64px)] px-4 py-8">
+        <div className="bg-white rounded-xl shadow-2xl p-8 max-w-lg w-full text-center">
+          <div className="mb-8">
+            <h1 className="text-3xl font-bold text-blue-600 mb-2">Bem-vindo ao TransportPay</h1>
+            <p className="text-gray-600 text-base">Sistema de pagamento rápido para transporte público</p>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
+            <div className="bg-blue-50 p-4 rounded-lg border border-blue-200 hover:-translate-y-1 transition-transform duration-300">
+              <svg className="w-12 h-12 mx-auto mb-2 text-blue-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v1m6 11h2m-6 0h-2m0 0V4m0 16-4-4h14l-4 4m-6-4v1" />
               </svg>
+              <h2 className="text-lg font-semibold text-gray-800 mb-1">QR Code</h2>
+              <p className="text-sm text-gray-600">Pague rapidamente escaneando o QR code</p>
             </div>
-            <h2 style={styles.optionTitle}>QR Code</h2>
-            <p style={styles.optionDescription}>Pague rapidamente escaneando o QR code</p>
-          </div>
-          
-          <div 
-            style={styles.paymentOption}
-            onMouseEnter={handlePaymentOptionHover}
-            onMouseLeave={handlePaymentOptionLeave}
-          >
-            <div style={styles.icon}>
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            
+            <div className="bg-blue-50 p-4 rounded-lg border border-blue-200 hover:-translate-y-1 transition-transform duration-300">
+              <svg className="w-12 h-12 mx-auto mb-2 text-blue-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" />
               </svg>
+              <h2 className="text-lg font-semibold text-gray-800 mb-1">USSD</h2>
+              <p className="text-sm text-gray-600">Utilize códigos USSD para pagamentos sem internet</p>
             </div>
-            <h2 style={styles.optionTitle}>USSD</h2>
-            <p style={styles.optionDescription}>Utilize códigos USSD para pagamentos sem internet</p>
           </div>
-        </div>
 
-        <div style={styles.actions}>
-          <Link 
-            to="/login" 
-            style={styles.loginButton}
-            onMouseEnter={handleButtonHover}
-            onMouseLeave={handleButtonLeave}
-          >
-            Entrar na sua conta
-          </Link>
-          
-          <div style={styles.registerLink}>
-            Novo usuário?{' '}
-            <a 
-              href="/register" 
-              style={styles.registerAnchor}
-              onMouseEnter={handleRegisterLinkHover}
-              onMouseLeave={handleRegisterLinkLeave}
+          <div className="flex flex-col gap-4">
+            <Link 
+              to="/login" 
+              className="bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 hover:scale-105 transition-all duration-300"
             >
-              Registre-se aqui
-            </a>
+              Entrar na sua conta
+            </Link>
+            
+            <div className="text-sm text-gray-600">
+              Novo usuário?{' '}
+              <Link 
+                to="/register" 
+                className="text-blue-600 hover:underline"
+              >
+                Registre-se aqui
+              </Link>
+            </div>
           </div>
         </div>
       </div>
-      
-      <div style={styles.footer}>
-        © 2025 TransportPay - Todos os direitos reservados
-      </div>
+
+      {/* Footer */}
+      <footer className="bg-blue-900 text-white py-6">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex flex-col md:flex-row justify-between items-center">
+            <p className="text-sm opacity-80">© 2025 TransportPay - Todos os direitos reservados</p>
+            <div className="mt-4 md:mt-0 flex space-x-6">
+              <a href="#" className="text-sm hover:underline opacity-80">Termos de Serviço</a>
+              <a href="#" className="text-sm hover:underline opacity-80">Política de Privacidade</a>
+              <a href="#" className="text-sm hover:underline opacity-80">Contato</a>
+            </div>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 }

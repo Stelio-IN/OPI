@@ -3,8 +3,8 @@ const Rota = require('../models/Rota');
 const Tarifa = require('../models/Tarifa');
 
 // Definir associações para o Sequelize
-TarifaRota.belongsTo(Rota, { foreignKey: 'id_rota', as: 'rota' });
-TarifaRota.belongsTo(Tarifa, { foreignKey: 'id_tarifa', as: 'tarifa' });
+TarifaRota.belongsTo(Rota, { foreignKey: 'id_rota', as: 'Rota' });
+TarifaRota.belongsTo(Tarifa, { foreignKey: 'id_tarifa', as: 'Tarifa' });
 
 // Criar uma nova associação entre Tarifa e Rota
 exports.associateTarifaRota = async (req, res) => {
@@ -38,8 +38,8 @@ exports.getAll = async (req, res) => {
   try {
     const tarifaRotas = await TarifaRota.findAll({
       include: [
-        { model: Rota, as: 'rota', attributes: ['id_rota', 'origen', 'destino'] },
-        { model: Tarifa, as: 'tarifa', attributes: ['id_tarifa', 'valor', 'tipo_cli'] }
+        { model: Rota, as: 'Rota', attributes: ['id_rota', 'origen', 'destino'] },
+        { model: Tarifa, as: 'Tarifa', attributes: ['id_tarifa', 'valor', 'tipo_cli'] }
       ]
     });
     res.status(200).json(tarifaRotas);
@@ -53,8 +53,8 @@ exports.getById = async (req, res) => {
   try {
     const tarifaRota = await TarifaRota.findByPk(req.params.id, {
       include: [
-        { model: Rota, as: 'rota', attributes: ['id_rota', 'origen', 'destino'] },
-        { model: Tarifa, as: 'tarifa', attributes: ['id_tarifa', 'valor', 'tipo_cli'] }
+        { model: Rota, as: 'Rota', attributes: ['id_rota', 'origen', 'destino'] },
+        { model: Tarifa, as: 'Tarifa', attributes: ['id_tarifa', 'valor', 'tipo_cli'] }
       ]
     });
 

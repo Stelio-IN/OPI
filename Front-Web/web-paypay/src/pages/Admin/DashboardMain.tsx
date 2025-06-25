@@ -254,12 +254,12 @@ const DashboardMain: React.FC = () => {
                 {instituicoes.slice(0, 5).map((inst, index) => (
                   <tr key={index}>
                     <td className="py-2 px-4 border-b border-gray-200">{inst.nome || 'N/A'}</td>
-                    <td className="py-2 px-4 border-b border-gray-200">{inst.tipo || 'N/A'}</td>
+                    <td className="py-2 px-4 border-b border-gray-200">{inst.email || 'N/A'}</td>
                     <td className="py-2 px-4 border-b border-gray-200">
                       <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                        inst.ativo ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
+                        inst.status ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
                       }`}>
-                        {inst.ativo ? 'Ativo' : 'Inativo'}
+                        {inst.status ? 'Activo' : 'Inactivo'}
                       </span>
                     </td>
                   </tr>
@@ -290,7 +290,7 @@ const DashboardMain: React.FC = () => {
               <tbody>
                 {rotas.slice(0, 5).map((rota, index) => (
                   <tr key={index}>
-                    <td className="py-2 px-4 border-b border-gray-200">{rota.origem || 'N/A'}</td>
+                    <td className="py-2 px-4 border-b border-gray-200">{rota.origen || 'N/A'}</td>
                     <td className="py-2 px-4 border-b border-gray-200">{rota.destino || 'N/A'}</td>
                     <td className="py-2 px-4 border-b border-gray-200">{rota.distancia ? `${rota.distancia} km` : 'N/A'}</td>
                   </tr>

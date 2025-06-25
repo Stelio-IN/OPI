@@ -5,7 +5,8 @@ import Dashboard from "./pages/Instituicao/Dashboard";
 import DashboardAdmin from "./pages/Admin/AdminDashboard";
 import AdminLogin from "./pages/Admin/AdminLogin";
 import Register from "./pages/Register";
-import './App.css'
+import './App.css';
+import Logout from './components/Logout';
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
         <Route path="/login/admin" element={<AdminLogin />} />
         <Route path="/dashboard/*" element={<Dashboard />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/logout" element={<Logout />} />
       </Routes>
     </Router>
   );
