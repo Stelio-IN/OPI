@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from 'react-router-dom';
 
 export default function Login() {
   const [email, setEmail] = useState('');
@@ -8,130 +8,15 @@ export default function Login() {
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
-  // Estilos CSS internos
-  const styles = {
-    container: {
-      minHeight: '100vh',
-      background: 'linear-gradient(to bottom, #1a73e8, #0d47a1)',
-      display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'center',
-      justifyContent: 'center',
-      padding: '20px',
-      fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif"
-    },
-    loginCard: {
-      backgroundColor: 'white',
-      borderRadius: '12px',
-      boxShadow: '0 10px 30px rgba(0, 0, 0, 0.2)',
-      padding: '32px',
-      maxWidth: '400px',
-      width: '100%'
-    },
-    header: {
-      textAlign: 'center',
-      marginBottom: '24px'
-    },
-    title: {
-      fontSize: '28px',
-      color: '#1a73e8',
-      marginBottom: '8px',
-      fontWeight: '700'
-    },
-    subtitle: {
-      color: '#5f6368',
-      fontSize: '16px'
-    },
-    form: {
-      display: 'flex',
-      flexDirection: 'column',
-      gap: '16px'
-    },
-    formGroup: {
-      display: 'flex',
-      flexDirection: 'column',
-      gap: '8px'
-    },
-    label: {
-      fontSize: '14px',
-      fontWeight: '600',
-      color: '#202124'
-    },
-    input: {
-      padding: '12px',
-      borderRadius: '8px',
-      border: '1px solid #dadce0',
-      fontSize: '16px',
-      outline: 'none',
-      transition: 'border 0.3s ease'
-    },
-    button: {
-      backgroundColor: '#1a73e8',
-      color: 'white',
-      border: 'none',
-      padding: '12px',
-      borderRadius: '8px',
-      fontSize: '16px',
-      fontWeight: '600',
-      cursor: 'pointer',
-      marginTop: '16px',
-      transition: 'background-color 0.3s ease'
-    },
-    buttonHover: {
-      backgroundColor: '#0d47a1'
-    },
-    buttonDisabled: {
-      backgroundColor: '#a0c3ff',
-      cursor: 'not-allowed'
-    },
-    error: {
-      color: '#d93025',
-      fontSize: '14px',
-      marginTop: '8px',
-      textAlign: 'center'
-    },
-    footer: {
-      display: 'flex',
-      justifyContent: 'space-between',
-      marginTop: '24px',
-      fontSize: '14px'
-    },
-    link: {
-      color: '#1a73e8',
-      textDecoration: 'none'
-    },
-    logo: {
-      textAlign: 'center',
-      marginBottom: '16px'
-    },
-    logoText: {
-      fontSize: '24px',
-      fontWeight: 'bold',
-      color: '#1a73e8'
-    }
-  };
-
-  // Funções para estilização com hover
-  const handleInputFocus = (e) => {
-    e.target.style.border = '2px solid #1a73e8';
-  };
-
-  const handleInputBlur = (e) => {
-    e.target.style.border = '1px solid #dadce0';
-  };
-
-  // Função para lidar com o envio do formulário
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
 
-    // Validação simples
     if (!email || !senha) {
       setError('Por favor, preencha todos os campos');
       return;
     }
 
-    // Validação de email
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
       setError('Por favor, informe um email válido');
@@ -141,12 +26,9 @@ export default function Login() {
     setLoading(true);
 
     try {
-      // Chamada para a API
       const response = await fetch('http://localhost:3005/api/instituicoes/login', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, senha }),
       });
 
@@ -156,59 +38,80 @@ export default function Login() {
         throw new Error(data.message || 'Erro ao fazer login');
       }
 
-      // Se o login for bem-sucedido, salvar token (se houver) e redirecionar
-      if (data.token) {
-        localStorage.setItem('token', data.token);
+      if (data.instituicao) {
+        // Store all authentication data in localStorage
+        localStorage.setItem('authData', JSON.stringify({
+          token: data.token, // Assuming the token is also returned
+          instituicao: data.instituicao,
+          lastLogin: new Date().toISOString()
+        }));
+        
+        // Store institution data separately for easy access
+        localStorage.setItem('instituicao', JSON.stringify(data.instituicao));
+        
+        // Store token separately for auth headers
+        if (data.token) {
+          localStorage.setItem('token', data.token);
+          localStorage.setItem('authHeader', `Bearer ${data.token}`);
+        }
+
+        // Redirect to dashboard
+        navigate('/dashboard');
+      } else {
+        throw new Error('Dados da instituição não encontrados na resposta');
       }
-      
-      // Redirecionar para o dashboard
-      navigate('/dashboard');
     } catch (error) {
       setError(error.message || 'Ocorreu um erro durante o login. Tente novamente.');
+      // Clear any partial authentication data on error
+      localStorage.removeItem('authData');
+      localStorage.removeItem('instituicao');
+      localStorage.removeItem('token');
+      localStorage.removeItem('authHeader');
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div style={styles.container}>
-      <div style={styles.loginCard}>
-        <div style={styles.logo}>
-          <span style={styles.logoText}>TransportPay</span>
-        </div>
-        <div style={styles.header}>
-          <h1 style={styles.title}>Login</h1>
-          <p style={styles.subtitle}>Acesse sua conta para continuar</p>
+    <div className="min-h-screen bg-gradient-to-b from-blue-600 to-blue-900 flex items-center justify-center p-4 font-sans">
+      <div className="bg-white rounded-xl shadow-lg p-8 w-full max-w-md">
+        <div className="text-center mb-4">
+          <div className="text-2xl font-bold text-blue-600">TransportPay</div>
         </div>
 
-        {error && <div style={styles.error}>{error}</div>}
+        <div className="text-center mb-6">
+          <h1 className="text-2xl font-bold text-blue-600">Login</h1>
+          <p className="text-gray-600 text-sm">Acesse sua conta para continuar</p>
+        </div>
 
-        <form style={styles.form} onSubmit={handleSubmit}>
-          <div style={styles.formGroup}>
-            <label htmlFor="email" style={styles.label}>Email</label>
+        {error && (
+          <div className="text-red-600 text-sm mb-4 text-center">
+            {error}
+          </div>
+        )}
+
+        <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+          <div className="flex flex-col gap-1">
+            <label htmlFor="email" className="text-sm font-semibold text-gray-700">Email</label>
             <input
-              type="email"
               id="email"
-              style={styles.input}
+              type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              onFocus={handleInputFocus}
-              onBlur={handleInputBlur}
+              className="px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
               placeholder="seu@email.com"
               autoComplete="email"
             />
           </div>
 
-          <div style={styles.formGroup}>
-            <label htmlFor="password" style={styles.label}>Senha</label>
+          <div className="flex flex-col gap-1">
+            <label htmlFor="password" className="text-sm font-semibold text-gray-700">Senha</label>
             <input
-              type="password"
               id="password"
-              style={styles.input}
+              type="password"
               value={senha}
               onChange={(e) => setPassword(e.target.value)}
-              onFocus={handleInputFocus}
-              onBlur={handleInputBlur}
+              className="px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
               placeholder="••••••••"
               autoComplete="current-password"
             />
@@ -216,19 +119,17 @@ export default function Login() {
 
           <button
             type="submit"
-            style={{
-              ...styles.button,
-              ...(loading ? styles.buttonDisabled : {})
-            }}
             disabled={loading}
+            className={`w-full py-2 mt-2 rounded-md text-white font-semibold transition 
+              ${loading ? 'bg-blue-300 cursor-not-allowed' : 'bg-blue-600 hover:bg-blue-700'}`}
           >
             {loading ? 'Processando...' : 'Entrar'}
           </button>
         </form>
 
-        <div style={styles.footer}>
-          <Link to="/" style={styles.link}>Voltar</Link>
-          <a href="#" style={styles.link}>Esqueceu a senha?</a>
+        <div className="flex justify-between mt-6 text-sm text-blue-600">
+          <Link to="/" className="hover:underline">Voltar</Link>
+          <a href="#" className="hover:underline">Esqueceu a senha?</a>
         </div>
       </div>
     </div>

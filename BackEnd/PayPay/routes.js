@@ -4,6 +4,7 @@ const AdminController = require('./controllers/AdminController');
 const TarifaController = require('./controllers/TarifaController');
 const RotaController = require('./controllers/RotaController');
 const TarifaRotaController = require('./controllers/TarifaRotaController');
+const FuncionarioController = require('./controllers/FuncionarioController');
 
 const router = express.Router();
 
@@ -34,5 +35,12 @@ router.delete('/tarifa', TarifaController.delete);
 router.post('/tarifa_rota',TarifaRotaController.associateTarifaRota)
 router.get('/tarifa_rota/all',TarifaRotaController.getAll)
 router.delete('/tarifa_rota/remove/:id',TarifaRotaController.delete)
+
+//Funcionarios
+router.post('/funcionario',FuncionarioController.create)
+router.get('/funcionario',FuncionarioController.getAll)
+router.put('/funcionario',FuncionarioController.update)
+router.get('/funcionario',FuncionarioController.getById)
+router.delete('/funcionario',FuncionarioController.delete)
 
 module.exports = router;
