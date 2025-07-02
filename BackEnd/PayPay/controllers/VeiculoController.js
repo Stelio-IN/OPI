@@ -1,62 +1,62 @@
-const veiculo = require('../models/Veiculo');
+const Veiculo = require('../models/Veiculo');
 
-// Criar um novo pagamento
+// Criar um novo veículo
 exports.create = async (req, res) => {
   try {
-    const pagamento = await veiculo.create(req.body);
-    res.status(201).json(pagamento);
+    const veiculo = await Veiculo.create(req.body);
+    res.status(201).json(veiculo);
   } catch (error) {
-    res.status(400).json({ error: 'Erro ao criar pagamento', details: error.message });
+    res.status(400).json({ error: 'Erro ao criar veículo', details: error.message });
   }
 };
 
-// Listar todos os pagamentos
+// Listar todos os veículos
 exports.getAll = async (req, res) => {
   try {
-    const pagamentos = await veiculo.findAll();
-    res.status(200).json(pagamentos);
+    const veiculos = await Veiculo.findAll();
+    res.status(200).json(veiculos);
   } catch (error) {
-    res.status(400).json({ error: 'Erro ao listar pagamentos', details: error.message });
+    res.status(400).json({ error: 'Erro ao listar veículos', details: error.message });
   }
 };
 
-// Obter um pagamento por ID
+// Obter um veículo por ID
 exports.getById = async (req, res) => {
   try {
-    const pagamento = await veiculo.findByPk(req.params.id);
-    if (!pagamento) {
-      return res.status(404).json({ error: 'veiculo não encontrado' });
+    const veiculo = await Veiculo.findByPk(req.params.id);
+    if (!veiculo) {
+      return res.status(404).json({ error: 'Veículo não encontrado' });
     }
-    res.status(200).json(pagamento);
+    res.status(200).json(veiculo);
   } catch (error) {
-    res.status(400).json({ error: 'Erro ao buscar pagamento', details: error.message });
+    res.status(400).json({ error: 'Erro ao buscar veículo', details: error.message });
   }
 };
 
-// Atualizar um pagamento
+// Atualizar um veículo
 exports.update = async (req, res) => {
   try {
-    const pagamento = await veiculo.findByPk(req.params.id);
-    if (!pagamento) {
-      return res.status(404).json({ error: 'veiculo não encontrado' });
+    const veiculo = await Veiculo.findByPk(req.params.id);
+    if (!veiculo) {
+      return res.status(404).json({ error: 'Veículo não encontrado' });
     }
-    await pagamento.update(req.body);
-    res.status(200).json(pagamento);
+    await veiculo.update(req.body);
+    res.status(200).json(veiculo);
   } catch (error) {
-    res.status(400).json({ error: 'Erro ao atualizar pagamento', details: error.message });
+    res.status(400).json({ error: 'Erro ao atualizar veículo', details: error.message });
   }
 };
 
-// Deletar um pagamento
+// Deletar um veículo
 exports.delete = async (req, res) => {
   try {
-    const pagamento = await veiculo.findByPk(req.params.id);
-    if (!pagamento) {
-      return res.status(404).json({ error: 'veiculo não encontrado' });
+    const veiculo = await Veiculo.findByPk(req.params.id);
+    if (!veiculo) {
+      return res.status(404).json({ error: 'Veículo não encontrado' });
     }
-    await veiculo.destroy();
+    await veiculo.destroy(); // Corrigido
     res.status(204).send();
   } catch (error) {
-    res.status(400).json({ error: 'Erro ao deletar veiculo', details: error.message });
+    res.status(400).json({ error: 'Erro ao deletar veículo', details: error.message });
   }
 };

@@ -9,6 +9,8 @@ const Rota = require('./Rota');
 const Tarifa = require('./Tarifa');
 const TarifaRota = require('./TarifaRota');
 const Veiculo = require('./Veiculo');
+const VeiculoTarifaRota = require('./VeiculoTarifaRota');
+const Viagem = require('./Viagem');
 
 // Definir associações entre os modelos
 
@@ -42,6 +44,8 @@ module.exports = {
   Rota, 
   Tarifa, 
   TarifaRota, 
-  Veiculo, 
+  Veiculo,
+  VeiculoTarifaRota,
+  Viagem, 
   syncDatabase 
 };

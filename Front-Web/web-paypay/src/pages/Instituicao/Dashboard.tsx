@@ -63,6 +63,17 @@ export default function Dashboard() {
             {!collapsed && <span>Frota</span>}
           </Link>
 
+              
+          <Link
+            to="/dashboard/fleetTarif"
+            className={`flex items-center px-4 py-3 text-sm hover:bg-[#2d3a50] transition 
+              ${isActive('FleetTarif') ? 'bg-[#2d3a50] text-white border-l-4 border-blue-500' : 'text-gray-400'}`}
+          >
+            <UserCircleIcon className={`w-6 h-6 ${isActive('FleetTarif') ? 'text-white' : 'text-gray-400'} ${collapsed ? '' : 'mr-3'}`} />
+            {!collapsed && <span>Veiculo Rota</span>}
+          </Link>
+
+
           <Link
             to="/dashboard/employees"
             className={`flex items-center px-4 py-3 text-sm hover:bg-[#2d3a50] transition 
@@ -79,6 +90,33 @@ export default function Dashboard() {
           >
             <UserCircleIcon className={`w-6 h-6 ${isActive('perfil') ? 'text-white' : 'text-gray-400'} ${collapsed ? '' : 'mr-3'}`} />
             {!collapsed && <span>Perfil</span>}
+          </Link>
+
+
+          <Link
+            to="/dashboard/viagem"
+            className={`flex items-center px-4 py-3 text-sm hover:bg-[#2d3a50] transition 
+              ${isActive('viagem') ? 'bg-[#2d3a50] text-white border-l-4 border-blue-500' : 'text-gray-400'}`}
+          >
+            <UserCircleIcon className={`w-6 h-6 ${isActive('viagem') ? 'text-white' : 'text-gray-400'} ${collapsed ? '' : 'mr-3'}`} />
+            {!collapsed && <span>Viagem</span>}
+          </Link>
+
+          <Link
+            to="/dashboard/pagamento"
+            className={`flex items-center px-4 py-3 text-sm hover:bg-[#2d3a50] transition 
+              ${isActive('pagamento') ? 'bg-[#2d3a50] text-white border-l-4 border-blue-500' : 'text-gray-400'}`}
+          >
+            <UserCircleIcon className={`w-6 h-6 ${isActive('pagamento') ? 'text-white' : 'text-gray-400'} ${collapsed ? '' : 'mr-3'}`} />
+            {!collapsed && <span>Pay</span>}
+          </Link>
+          <Link
+            to="/dashboard/qr"
+            className={`flex items-center px-4 py-3 text-sm hover:bg-[#2d3a50] transition 
+              ${isActive('qr') ? 'bg-[#2d3a50] text-white border-l-4 border-blue-500' : 'text-gray-400'}`}
+          >
+            <UserCircleIcon className={`w-6 h-6 ${isActive('qr') ? 'text-white' : 'text-gray-400'} ${collapsed ? '' : 'mr-3'}`} />
+            {!collapsed && <span>Qr</span>}
           </Link>
         </nav>
 

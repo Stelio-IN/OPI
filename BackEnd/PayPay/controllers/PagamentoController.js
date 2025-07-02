@@ -3,6 +3,7 @@ const Pagamento = require('../models/Pagamento');
 // Criar um novo pagamento
 exports.create = async (req, res) => {
   try {
+    console.log(req.body)
     const pagamento = await Pagamento.create(req.body);
     res.status(201).json(pagamento);
   } catch (error) {
